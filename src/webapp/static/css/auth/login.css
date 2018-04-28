@@ -1,0 +1,22 @@
+.left{
+    display: inline-block;
+    float: left;
+    text-align: center;
+}
+.right{
+    display: inline-block;
+    float: right;
+}
+.left{
+    padding-top: 8%;
+}
+.right{
+    padding-top: 14%;
+}
+.right label{
+    display: inline-block;
+    margin-right: 4px;
+    vertical-align: middle;
+    font-size: 18px;
+}
+
