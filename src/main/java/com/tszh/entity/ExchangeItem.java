@@ -2,6 +2,7 @@ package com.tszh.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -18,19 +19,25 @@ public class ExchangeItem {
     @Column(name = "exchange_item_id")
     @GenericGenerator(name="gen_identity",strategy = "uuid")
     @GeneratedValue(generator = "gen_identity")
-    private int id;
+    private String id;
 
-    @ManyToOne(targetEntity = ExchangeBook.class)
+    @ManyToOne(targetEntity = ExchangeBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name="exchange_book_id",referencedColumnName = "exchange_book_id")
     private ExchangeBook exchangeBook;
 
-    @OneToOne(targetEntity = WishBook.class)
-    @JoinColumn(name = "wish_book_id",referencedColumnName = "wish_book_id")
+    @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @JoinColumn(name="apply_user_id",referencedColumnName = "user_id")
+    private User user;
+
+    @OneToOne(targetEntity = WishBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @JoinColumn(name = "wish_book_id",referencedColumnName = "wish_book_id",unique = true)
     private WishBook wishBook;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name="user_id",referencedColumnName = "user_id")
-    private User user;
+    /*@ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @JoinColumn(name="own_user_id",referencedColumnName = "user_id")
+    private User owner;*/
+    @Column(length = 64)
+    private String wishBookOwner;
 
     @Column
     private short status;
@@ -55,12 +62,23 @@ public class ExchangeItem {
     @Column
     private boolean deleted=false;
 
+    public ExchangeItem() {
+    }
 
-    public int getId() {
+    public ExchangeItem(User user, ExchangeBook exchangeBook, WishBook wishBook, String wishBookOwner, short status, Date applicationDate) {
+        this.exchangeBook = exchangeBook;
+        this.user = user;
+        this.wishBook = wishBook;
+        this.wishBookOwner = wishBookOwner;
+        this.status = status;
+        this.applicationDate = applicationDate;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -118,6 +136,14 @@ public class ExchangeItem {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getWishBookOwner() {
+        return wishBookOwner;
+    }
+
+    public void setWishBookOwner(String wishBookOwner) {
+        this.wishBookOwner = wishBookOwner;
     }
 
     public Date getCreateAt() {

@@ -1,6 +1,8 @@
 package com.tszh.util;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -14,9 +16,9 @@ public class CryptographyUtil {
 
     //private static final String salt="tszh";
 
-    public String md5(String string,String salt)
+    public String md5(String string, ByteSource salt, int iter)
     {
-        return new Md5Hash(string,salt).toString();
+        return new SimpleHash("MD5",string,salt,iter).toHex();
     }
 
 }

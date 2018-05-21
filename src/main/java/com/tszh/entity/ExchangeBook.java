@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -47,24 +48,39 @@ public class ExchangeBook {
     @Column(length = 128)
     private String press;
 
+    /**
+     * 发布日期
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date releaseDate;
+
+    /**
+     * 出版日期
+     */
     @Temporal(TemporalType.DATE)
     private Date publicationDate;
 
     @Column
-    private short type;
+    private short type=0;
 
     @Column
     private String extra;
 
-    @Type(type = "byte")
-    private boolean inLibrary;
+    @Column
+    private boolean inLibrary=true;
 
-    @Type(type = "byte")
-    private boolean canExchange;
+    @Column
+    private boolean canExchange=true;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
     @JoinColumn(name="user_id",referencedColumnName = "user_id")
     private User user;
+
+    @ManyToMany(targetEntity = BookType.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "t_book_type",
+            joinColumns = @JoinColumn(name = "exchange_book_id",referencedColumnName = "exchange_book_id"),
+            inverseJoinColumns = @JoinColumn(name = "booktype_id",referencedColumnName = "booktype_id"))
+    private Set<BookType> bookTypes=new HashSet<>();
 
     @OneToMany(targetEntity = ExchangeItem.class,mappedBy = "exchangeBook")
     private Set<ExchangeItem> exchangeItems;
@@ -80,6 +96,17 @@ public class ExchangeBook {
     @Column
     private boolean deleted=false;
 
+    public ExchangeBook() {
+    }
+
+    public ExchangeBook(String bookName, String author, String ISBN, String press,Date publicationDate, String extra) {
+        this.bookName = bookName;
+        this.author = author;
+        this.ISBN = ISBN;
+        this.press = press;
+        this.publicationDate = publicationDate;
+        this.extra = extra;
+    }
 
     public Set<ExchangeItem> getExchangeItems() {
         return exchangeItems;
@@ -129,6 +156,14 @@ public class ExchangeBook {
         this.press = press;
     }
 
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     public Date getPublicationDate() {
         return publicationDate;
     }
@@ -171,6 +206,14 @@ public class ExchangeBook {
 
     public User getUser() {
         return user;
+    }
+
+    public Set<BookType> getBookTypes() {
+        return bookTypes;
+    }
+
+    public void setBookTypes(Set<BookType> bookTypes) {
+        this.bookTypes = bookTypes;
     }
 
     public void setUser(User user) {

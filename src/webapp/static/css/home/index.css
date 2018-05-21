@@ -1,0 +1,35 @@
+.navbar2{
+    color: #b94a48;
+}
+#panel_1, #panel_2, #panel_3, #panel_4{
+    margin-top: 0;
+    width: 250px;
+}
+#panel_1, #panel_2, #panel_3{
+    border-bottom: none;
+}
+.panel .panel-header{
+    font-family: 微软雅黑;
+    background-color: transparent;
+}
+.panel .panel-body{
+    padding: 0;
+    border: none;
+}
+.panel .panel-body ul{
+    padding-left: 0;
+    margin-bottom: 0;
+}
+.panel .panel-body ul li{
+    list-style: none;
+    height: 30px;
+    padding-top: 3px;
+    padding-left:15px;
+    border: none;
+    /*border-bottom: 1px solid lightgray;*/
+}
+.panel .panel-body ul li a{
+    font-family: 微软雅黑;
+    font-size: 16px;
+    color: #3c3c3c;
+}

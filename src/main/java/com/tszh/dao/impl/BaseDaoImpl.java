@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/4/16 0016.
@@ -133,6 +134,19 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }
         return query.setFirstResult(pageBean.getStart()).
                 setMaxResults(pageBean.getPageSize()).list();
+    }
+
+    public BaseDaoImpl() {
+        super();
+    }
+
+    @Override
+    public List<T> findIn(String hql, Map<String, List<?>> params) {
+        Query query=this.getCurrentSession().createQuery(hql);
+        for(Map.Entry<String,List<?>> entry:params.entrySet()){
+            query.setParameterList(entry.getKey(),entry.getValue());
+        }
+        return query.list();
     }
 
     @Override

@@ -1,11 +1,25 @@
 package com.tszh.controller;
 
+import com.tszh.cons.Code;
 import com.tszh.entity.User;
+import com.tszh.exception.CustomException;
 import com.tszh.service.UserService;
 import com.tszh.util.CryptographyUtil;
+import com.tszh.vo.ResponseTemplate;
+import com.tszh.vo.requestVO.LoginVO;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,13 +27,15 @@ import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 
 /**
  * Created by Administrator on 2018/4/18 0018.
  */
-@Controller
+@Controller()
 @RequestMapping("/")
 public class AuthController {
 
@@ -37,46 +53,37 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login()
+    public String login(Model model, HttpServletRequest request)
     {
-        return "auth/login";
+        Subject subject=SecurityUtils.getSubject();
+        if(subject.isAuthenticated())
+        {
+            if (subject.hasRole("user"))
+                return "redirect:/home";
+        }
+        request.setAttribute("title","登录");
+        request.setAttribute("contentPath","login.jsp");
+        return "auth/auth_common";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String loginAction(@RequestParam(value = "email",required = true) String email,
-                              @RequestParam(value = "password",required = true) String password,
-                              HttpServletRequest request, HttpServletResponse servletResponse)
+    @RequestMapping(value = "/register",method = RequestMethod.GET)
+    public String register(HttpServletRequest request)
     {
-        System.out.println("123456");
-        return "home/index";
-        /*ModelAndView mav=new ModelAndView();
-        HttpSession session=request.getSession();
-        User currentUser=(User)session.getAttribute("currentUser");
-        System.out.println(currentUser);
-        if(currentUser!=null ){
-            mav.setViewName("redirect:/home");
-            return mav;
+        Subject subject=SecurityUtils.getSubject();
+        if(subject.isAuthenticated())
+        {
+            if (subject.hasRole("user"))
+                return "redirect:/home";
         }
-        User user=userService.findUserByEmail(email);
-        if(user==null || !StringUtils.equals(cryptographyUtil.md5(password,user.getSalt()),user.getPassword())){
-            mav.setViewName("auth/login");
-            mav.addObject("email",email);
-            mav.addObject("passowrd",password);
-            mav.addObject("errorMsg","用户名或密码错误");
-            return mav;
-        }else{
-            user.setLastLoginDate(new Date());
-            userService.save(user);
-            session.setAttribute("currentUser",user);
-            mav.setViewName("redirect:/home");
-            return mav;
-        }*/
+        request.setAttribute("title","注册");
+        request.setAttribute("contentPath","register.jsp");
+        return "auth/auth_common";
     }
 
     @RequestMapping(value = "/unauthorized")
     public String unauthorized()
     {
-        return "view/auth/unauthorized";
+        return "auth/unauthorized";
     }
 
 }

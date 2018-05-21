@@ -190,6 +190,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>3.1.0.CR2</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-api</artifactId>
             <version>9.3.10.v20160621</version>
@@ -273,6 +279,25 @@
             <artifactId>log4j-core</artifactId>
             <version>2.8.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+            <version>2.0</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -332,7 +357,7 @@
                         ${basedir}/src/main/webapp
                     </warSourceDirectory>
                     <webXml>
-                        ${basedir}/src/main.webapp/WEB-INF/web.xml
+                        ${basedir}/src/main/webapp/WEB-INF/web.xml
                     </webXml>
                 </configuration>
             </plugin>

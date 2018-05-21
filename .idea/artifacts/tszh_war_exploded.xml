@@ -26,7 +26,7 @@
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.3" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
-          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.0.GA" />
+          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.0.CR2" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.20" />
           <element id="library" level="module" name="Maven: com.alibaba:jconsole:1.8.0" module-name="tszh" />
           <element id="library" level="module" name="Maven: com.alibaba:tools:1.8.0" module-name="tszh" />
@@ -64,6 +64,20 @@
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.7" />
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.8.2" />
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.8.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.3.6.RELEASE" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.1" />
+          <element id="library" level="project" name="Maven: org.apache.velocity:velocity-tools:2.0" />
+          <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.8" />
+          <element id="library" level="project" name="Maven: commons-chain:commons-chain:1.1" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2" />
+          <element id="library" level="project" name="Maven: commons-validator:commons-validator:1.3.1" />
+          <element id="library" level="project" name="Maven: oro:oro:2.0.8" />
+          <element id="library" level="project" name="Maven: sslext:sslext:1.2-0" />
+          <element id="library" level="project" name="Maven: org.apache.struts:struts-core:1.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.struts:struts-taglib:1.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.struts:struts-tiles:1.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.velocity:velocity:1.6.2" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.4" />
         </element>
       </element>
       <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:bundle:2.5.1" />

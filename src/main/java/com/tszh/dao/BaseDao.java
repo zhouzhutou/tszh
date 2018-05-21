@@ -6,6 +6,7 @@ import com.tszh.entity.PageBean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 基础数据库操作
@@ -110,6 +111,15 @@ public interface BaseDao<T> {
      * @return
      */
     public List<T> find(String hql, List<Object> params, PageBean pageBean);
+
+    /**
+     * in查询
+     * @param hql
+     * @param params
+     * @return
+     */
+    public List<T> findIn(String hql,Map<String,List<?>> params);
+
 
     /**
      * 获得一个对象
