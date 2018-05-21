@@ -25,14 +25,15 @@
     <!--配置自定义realm-->
     <bean id="customRealm" class="com.tszh.shiro.CustomRealm">
         <property name="cacheManager" ref="shiroEhcacheManager"/>
-    <!--    <property name="credentialsMatcher" ref="credentialsMatcher" />-->
+        <property name="credentialsMatcher" ref="hashedCredentialsMatcher" />
     </bean>
 
     <!--凭证匹配器 -->
-    <bean id="credentialsMatcher"
+    <bean id="hashedCredentialsMatcher"
           class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-        <property name="hashAlgorithmName" value="md5" />
+        <property name="hashAlgorithmName" value="MD5" />
         <property name="hashIterations" value="1" />
+        <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
 
     <!--配置shiro的SecurityManager-->
@@ -53,16 +54,16 @@
 
   <!--  <bean id="customFormAuthenticationFilter" class="com.tszh.shiro.CustomFormAuthenticationFilter"/>-->
     <bean id="formAuthenticationFilter" class="com.tszh.shiro.CustomFormAuthenticationFilter">
-        <property name="usernameParam" value="username" />
-        <property name="passwordParam" value="password" />
-        <!--<property name="rememberMeParam" value="rememberMe" />-->
+    <property name="usernameParam" value="username" />
+    <property name="passwordParam" value="password" />
+    <!--<property name="rememberMeParam" value="rememberMe" />-->
     </bean>
 
     <!--定义ShiroFilter-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/login" />
-     <!--   <property name="successUrl" value="/home" />-->
+        <property name="successUrl" value="/home" />
         <property name="unauthorizedUrl" value="/unauthorized"/>
       <!--  <property name="filters">
             <map>
@@ -71,11 +72,15 @@
         </property>-->
         <property name="filterChainDefinitions">
             <value>
-                /test=anon
+                /test**=anon
+                /login=anon
                 /doLogin=anon
+                /register=anon
+                /doRegister=anon
                 /unauthorized=anon
                 /logout=logout
                 /resources/** = anon
+                /view/**=anon
                 /**=authc
             </value>
         </property>

@@ -35,18 +35,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByEmail(String email) {
-        String hql="from User u inner join fetch u.role r inner join fetch r.permissions where u.email=?";
+        String hql="from User u inner join fetch u.role r where u.email=? and u.deleted=false";
         List<Object> parameters=new ArrayList<>();
         parameters.add(email);
         return userDao.get(hql,parameters);
     }
 
     @Override
+    public User findUserByUserName(String username) {
+        String hql="from User u inner join fetch u.role r where u.username=? and u.deleted=false";
+        List<Object> parameters=new ArrayList<>();
+        parameters.add(username);
+        return userDao.get(hql,parameters);
+    }
+
+    @Override
     public Role getRoleByEmail(String email) {
-        String hql="from User u inner join fetch u.role r inner join fetch r.permissions p where u.email=?";
+        String hql="from User u inner join fetch u.role r where u.email=? and u.deleted=false";
         List<Object> parameters=new ArrayList<>();
         parameters.add(email);
         User user=userDao.get(hql,parameters);
         return user.getRole();
     }
+
+    @Override
+    public int countByEmail(String email)
+    {
+        String hql="select count(*) from User u where u.email=? and u.deleted=false";
+        List<Object> parameters=new ArrayList<>();
+        parameters.add(email);
+        return userDao.count(hql,parameters).intValue();
+    }
+
+
 }

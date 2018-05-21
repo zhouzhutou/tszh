@@ -2,6 +2,7 @@ package com.tszh.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -32,7 +33,8 @@ public class Address {
     @Column(length = 64)
     private String streetAddress;
 
-    @OneToOne(targetEntity = User.class,mappedBy = "address")
+    @OneToOne(targetEntity = User.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",referencedColumnName = "user_id",unique = true)
     private User user;
 
     @CreationTimestamp
@@ -127,5 +129,20 @@ public class Address {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", county='" + county + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", user=" + user +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                ", deleted=" + deleted +
+                '}';
     }
 }

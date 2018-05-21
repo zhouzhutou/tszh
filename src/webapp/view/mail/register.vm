@@ -1,0 +1,11 @@
+<html>
+<body>
+<h3>您好</h3>
+<div style="margin-left: 20px">
+    <h3>欢迎注册图书置换系统账号，您的注册验证码为<strong style="color: deepskyblue">${authCode}</strong>。</h3>
+</div>
+<div style="text-align: right">
+    ${currentDate}
+</div>
+</body>
+</html>

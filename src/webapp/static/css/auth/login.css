@@ -1,22 +1,15 @@
-.left{
-    display: inline-block;
-    float: left;
-    text-align: center;
+.form-horizontal .form-group label{
+    font-family: 宋体;
+    font-size: large;
+    font-weight: normal;
 }
-.right{
-    display: inline-block;
-    float: right;
+#emailLabel, #passwordLabel{
+    text-align: right;
+    margin: 0;
 }
-.left{
-    padding-top: 8%;
-}
-.right{
-    padding-top: 14%;
-}
-.right label{
-    display: inline-block;
-    margin-right: 4px;
-    vertical-align: middle;
-    font-size: 18px;
+
+#registerForm .form-horizontal .form-group label{
+    text-align: right;
+    margin: 0;
 }
 

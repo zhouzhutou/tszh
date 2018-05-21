@@ -2,10 +2,13 @@ package com.tszh.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * WishBook
@@ -55,6 +58,15 @@ public class WishBook {
     @JoinColumn(name="user_id",referencedColumnName = "user_id")
     private User user;
 
+    @Column
+    private String extra;
+
+    @ManyToMany(targetEntity = BookType.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "t_wish_book_type",
+            joinColumns = @JoinColumn(name = "wish_book_id",referencedColumnName = "wish_book_id"),
+            inverseJoinColumns = @JoinColumn(name = "booktype_id",referencedColumnName = "booktype_id"))
+    private Set<BookType> bookTypes=new HashSet<>();
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
@@ -66,6 +78,17 @@ public class WishBook {
     @Column
     private boolean deleted=false;
 
+    public WishBook() {
+    }
+
+    public WishBook(String bookName, String author, String ISBN, String press, Date publicationDate, String extra) {
+        this.bookName = bookName;
+        this.author = author;
+        this.ISBN = ISBN;
+        this.press = press;
+        this.publicationDate = publicationDate;
+        this.extra = extra;
+    }
 
     public int getId() {
         return id;
@@ -123,12 +146,28 @@ public class WishBook {
         this.user = user;
     }
 
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
     public ExchangeItem getExchangeItem() {
         return exchangeItem;
     }
 
     public void setExchangeItem(ExchangeItem exchangeItem) {
         this.exchangeItem = exchangeItem;
+    }
+
+    public Set<BookType> getBookTypes() {
+        return bookTypes;
+    }
+
+    public void setBookTypes(Set<BookType> bookTypes) {
+        this.bookTypes = bookTypes;
     }
 
     public Date getCreateAt() {

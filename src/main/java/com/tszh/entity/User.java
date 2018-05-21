@@ -3,11 +3,13 @@ package com.tszh.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,20 +38,22 @@ public class User {
     @Column
     private String password;
 
-    @OneToOne(targetEntity = Address.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id",referencedColumnName = "address_id",unique = true)
+    @Column
+    private byte sex;//0-男，1-女
+
+    @OneToOne(targetEntity = Address.class,mappedBy = "user",fetch = FetchType.LAZY)
     private Address address;
 
     @Column
     private int deposit;
 
-    @OneToMany(targetEntity = ExchangeBook.class,mappedBy = "user")
-    Set<ExchangeBook> exchangeBooks;
+    @OneToMany(targetEntity = ExchangeBook.class,mappedBy = "user",fetch = FetchType.LAZY)
+    Set<ExchangeBook> exchangeBooks=new HashSet<>();
 
-    @OneToMany(targetEntity = WishBook.class,mappedBy = "user")
-    Set<WishBook> wishBooks;
+    @OneToMany(targetEntity = WishBook.class,mappedBy = "user",fetch = FetchType.LAZY)
+    Set<WishBook> wishBooks=new HashSet<>();
 
-    @OneToMany(targetEntity = ExchangeItem.class,mappedBy = "user")
+    @OneToMany(targetEntity = ExchangeItem.class,mappedBy = "user",fetch = FetchType.LAZY)
     Set<ExchangeItem> exchangeItems;
 
     @ManyToOne(targetEntity = Role.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -110,6 +114,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte getSex() {
+        return sex;
+    }
+
+    public void setSex(byte sex) {
+        this.sex = sex;
     }
 
     public Address getAddress() {
@@ -198,10 +210,16 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", salt='" + salt + '\'' +
                 ", password='" + password + '\'' +
+                ", sex=" + sex +
                 ", address=" + address +
                 ", deposit=" + deposit +
+                ", exchangeBooks=" + exchangeBooks +
+                ", wishBooks=" + wishBooks +
+                ", exchangeItems=" + exchangeItems +
                 ", role=" + role +
+                ", lastLoginDate=" + lastLoginDate +
                 ", createAt=" + createAt +
                 ", updateAt=" + updateAt +
                 ", deleted=" + deleted +

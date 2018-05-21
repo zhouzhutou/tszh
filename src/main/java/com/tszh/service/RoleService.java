@@ -17,4 +17,10 @@ public interface RoleService {
      */
     public Serializable save(Role role);
 
+    /**
+     * 根据权限名获取权限实体
+     * @param role
+     * @return
+     */
+    public Role getRoleByName(String role);
 }
