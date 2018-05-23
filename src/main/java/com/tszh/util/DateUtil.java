@@ -16,7 +16,7 @@ public class DateUtil {
     public String formatDate(Date date,String format)
     {
         if(date==null)
-            return null;
+            return "";
         SimpleDateFormat sdf=new SimpleDateFormat(format);
         return sdf.format(date);
     }

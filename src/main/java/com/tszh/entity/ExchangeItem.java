@@ -25,13 +25,17 @@ public class ExchangeItem {
     @JoinColumn(name="exchange_book_id",referencedColumnName = "exchange_book_id")
     private ExchangeBook exchangeBook;
 
+    @ManyToOne(targetEntity = ExchangeBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @JoinColumn(name="wish_book_id",referencedColumnName = "exchange_book_id")
+    private ExchangeBook wishBook;
+
     @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name="apply_user_id",referencedColumnName = "user_id")
     private User user;
 
-    @OneToOne(targetEntity = WishBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
+   /* @OneToOne(targetEntity = WishBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name = "wish_book_id",referencedColumnName = "wish_book_id",unique = true)
-    private WishBook wishBook;
+    private WishBook wishBook;*/
 
     /*@ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name="own_user_id",referencedColumnName = "user_id")
@@ -65,7 +69,7 @@ public class ExchangeItem {
     public ExchangeItem() {
     }
 
-    public ExchangeItem(User user, ExchangeBook exchangeBook, WishBook wishBook, String wishBookOwner, short status, Date applicationDate) {
+    public ExchangeItem(User user, ExchangeBook exchangeBook, ExchangeBook wishBook, String wishBookOwner, short status, Date applicationDate) {
         this.exchangeBook = exchangeBook;
         this.user = user;
         this.wishBook = wishBook;
@@ -122,11 +126,11 @@ public class ExchangeItem {
         this.exchangeBook = exchangeBook;
     }
 
-    public WishBook getWishBook() {
+    public ExchangeBook getWishBook() {
         return wishBook;
     }
 
-    public void setWishBook(WishBook wishBook) {
+    public void setWishBook(ExchangeBook wishBook) {
         this.wishBook = wishBook;
     }
 

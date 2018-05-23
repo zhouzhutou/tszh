@@ -1,5 +1,6 @@
 package com.tszh.vo.responseVO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2018/5/19 0019.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResExchangeBookItemSearchVO {
 
     private String id;

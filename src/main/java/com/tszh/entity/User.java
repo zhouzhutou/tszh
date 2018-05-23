@@ -50,8 +50,8 @@ public class User {
     @OneToMany(targetEntity = ExchangeBook.class,mappedBy = "user",fetch = FetchType.LAZY)
     Set<ExchangeBook> exchangeBooks=new HashSet<>();
 
-    @OneToMany(targetEntity = WishBook.class,mappedBy = "user",fetch = FetchType.LAZY)
-    Set<WishBook> wishBooks=new HashSet<>();
+/*    @OneToMany(targetEntity = WishBook.class,mappedBy = "user",fetch = FetchType.LAZY)
+    Set<WishBook> wishBooks=new HashSet<>();*/
 
     @OneToMany(targetEntity = ExchangeItem.class,mappedBy = "user",fetch = FetchType.LAZY)
     Set<ExchangeItem> exchangeItems;
@@ -148,14 +148,6 @@ public class User {
         this.exchangeBooks = exchangeBooks;
     }
 
-    public Set<WishBook> getWishBooks() {
-        return wishBooks;
-    }
-
-    public void setWishBooks(Set<WishBook> wishBooks) {
-        this.wishBooks = wishBooks;
-    }
-
     public Set<ExchangeItem> getExchangeItems() {
         return exchangeItems;
     }
@@ -216,7 +208,6 @@ public class User {
                 ", address=" + address +
                 ", deposit=" + deposit +
                 ", exchangeBooks=" + exchangeBooks +
-                ", wishBooks=" + wishBooks +
                 ", exchangeItems=" + exchangeItems +
                 ", role=" + role +
                 ", lastLoginDate=" + lastLoginDate +

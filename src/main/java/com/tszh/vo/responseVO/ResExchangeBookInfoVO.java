@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2018/5/18 0018.
  */
-//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResExchangeBookInfoVO {
 
     private int id;

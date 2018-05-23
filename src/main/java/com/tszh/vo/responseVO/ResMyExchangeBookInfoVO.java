@@ -1,15 +1,15 @@
 package com.tszh.vo.responseVO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
+import java.util.List;
 
 /**
- * Created by Administrator on 2018/5/16 0016.
+ * Created by Administrator on 2018/5/22 0022.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResBookSearchVO {
+public class ResMyExchangeBookInfoVO {
 
     private int id;
 
@@ -17,19 +17,35 @@ public class ResBookSearchVO {
 
     private String author;
 
-    private String ISBN;
+    private String isbn;
+
+    private List<String> types;
 
     private String press;
 
-    private String publicationDate;
+    private Date publicationDate;
 
     private String releaseDate;
 
-    private String type;
-
-    private String owner;
+    private String extra;
 
     private boolean canExchange;
+
+    public ResMyExchangeBookInfoVO(){}
+
+    public ResMyExchangeBookInfoVO(int id, String bookName, String author, String isbn, List<String> types, String press,
+                                   Date publicationDate, String releaseDate, String extra, boolean canExchange) {
+        this.id = id;
+        this.bookName = bookName;
+        this.author = author;
+        this.isbn = isbn;
+        this.types = types;
+        this.press = press;
+        this.publicationDate = publicationDate;
+        this.releaseDate = releaseDate;
+        this.extra = extra;
+        this.canExchange = canExchange;
+    }
 
     public int getId() {
         return id;
@@ -55,12 +71,20 @@ public class ResBookSearchVO {
         this.author = author;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     public String getPress() {
@@ -71,11 +95,11 @@ public class ResBookSearchVO {
         this.press = press;
     }
 
-    public String getPublicationDate() {
+    public Date getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(String publicationDate) {
+    public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
     }
 
@@ -87,20 +111,12 @@ public class ResBookSearchVO {
         this.releaseDate = releaseDate;
     }
 
-    public String getType() {
-        return type;
+    public String getExtra() {
+        return extra;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 
     public boolean isCanExchange() {
@@ -110,4 +126,6 @@ public class ResBookSearchVO {
     public void setCanExchange(boolean canExchange) {
         this.canExchange = canExchange;
     }
+
+
 }

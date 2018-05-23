@@ -119,8 +119,8 @@ public class ResExchangeItemController {
         wishBookService.save(wb);
 
         //保存ExchangeItem item
-        ExchangeItem item=new ExchangeItem(user,eb,wb,owner.getUsername(),(short) 0,new Date());
-        exchangeItemService.save(item);
+        //ExchangeItem item=new ExchangeItem(user,eb,wb,owner.getUsername(),(short) 0,new Date());
+        //exchangeItemService.save(item);
         ResponseTemplate responseTemplate=new ResponseTemplate(Code.SUCCESS.getCode(),"置换申请成功");
         ResponseEntity<ResponseTemplate> responseEntity=new ResponseEntity<ResponseTemplate>(responseTemplate, HttpStatus.OK);
         return responseEntity;

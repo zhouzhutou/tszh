@@ -5,7 +5,9 @@ import com.tszh.entity.BookType;
 import com.tszh.entity.ExchangeBook;
 import com.tszh.entity.User;
 import com.tszh.exception.CustomException;
+import com.tszh.service.BookTypeService;
 import com.tszh.service.ExchangeBookService;
+import com.tszh.service.UserService;
 import com.tszh.util.DateUtil;
 import com.tszh.util.NumberUtil;
 import com.tszh.vo.BootstrapTableResult;
@@ -14,6 +16,7 @@ import com.tszh.vo.requestVO.BookReleaseVO;
 import com.tszh.vo.requestVO.BookSearchVO;
 import com.tszh.vo.responseVO.ResBookSearchVO;
 import com.tszh.vo.responseVO.ResExchangeBookInfoVO;
+import com.tszh.vo.responseVO.ResMyExchangeBookInfoVO;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,10 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.xml.ws.Response;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/5/14 0014.
@@ -37,6 +39,12 @@ public class RestExchangeBookController {
 
     @Autowired
     ExchangeBookService exchangeBookService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    BookTypeService bookTypeService;
 
     @Autowired
     NumberUtil numberUtil;
@@ -70,19 +78,21 @@ public class RestExchangeBookController {
                 rbsv.setISBN(eb.getISBN());
                 rbsv.setPress(eb.getPress());
                 rbsv.setOwner(eb.getUser().getUsername());
-                rbsv.setPublicationDate(eb.getPublicationDate());
+                rbsv.setPublicationDate(dateUtil.formatDate(eb.getPublicationDate(),"yyyy-MM-dd"));
                 rbsv.setReleaseDate(dateUtil.formatDate(eb.getReleaseDate(),"yyyy-MM-dd HH:mm:ss"));
                 rbsv.setCanExchange(eb.isCanExchange());
                 String type="";
                 Set<BookType> bookTypeSet=eb.getBookTypes();
-                Iterator<BookType> iter=bookTypeSet.iterator();
-                int c=0;
-                while (iter.hasNext()){
-                    if(c>0)
-                        type+=","+iter.next().getType();
-                    else
-                        type+=iter.next().getType();
-                    c++;
+                if(bookTypeSet!=null && bookTypeSet.size()>0) {
+                    Iterator<BookType> iter = bookTypeSet.iterator();
+                    int c = 0;
+                    while (iter.hasNext()) {
+                        if (c > 0)
+                            type += "," + iter.next().getType();
+                        else
+                            type += iter.next().getType();
+                        c++;
+                    }
                 }
                 rbsv.setType(type);
                 resBookSearchVOList.add(rbsv);
@@ -115,19 +125,21 @@ public class RestExchangeBookController {
                 rbsv.setAuthor(eb.getAuthor());
                 rbsv.setISBN(eb.getISBN());
                 rbsv.setPress(eb.getPress());
-                rbsv.setPublicationDate(eb.getPublicationDate());
+                rbsv.setPublicationDate(dateUtil.formatDate(eb.getPublicationDate(),"yyyy-MM-dd"));
                 rbsv.setReleaseDate(dateUtil.formatDate(eb.getReleaseDate(),"yyyy-MM-dd HH:mm:ss"));
                 rbsv.setCanExchange(eb.isCanExchange());
                 String type="";
                 Set<BookType> bookTypeSet=eb.getBookTypes();
-                Iterator<BookType> iter=bookTypeSet.iterator();
-                int c=0;
-                while (iter.hasNext()){
-                    if(c>0)
-                        type+=","+iter.next().getType();
-                    else
-                        type+=iter.next().getType();
-                    c++;
+                if(bookTypeSet!=null && bookTypeSet.size()>0) {
+                    Iterator<BookType> iter = bookTypeSet.iterator();
+                    int c = 0;
+                    while (iter.hasNext()) {
+                        if (c > 0)
+                            type += "," + iter.next().getType();
+                        else
+                            type += iter.next().getType();
+                        c++;
+                    }
                 }
                 rbsv.setType(type);
                 resBookSearchVOList.add(rbsv);
@@ -151,16 +163,18 @@ public class RestExchangeBookController {
         ExchangeBook eb=exchangeBookService.getExchangeBookById(bookId);
         if(eb==null)
             throw new CustomException("id为"+id+"的图书不存在",Code.NOT_FOUND_ERROR.getCode());
-        Set<BookType> bookTypes=eb.getBookTypes();
+        Set<BookType> bookTypeSet=eb.getBookTypes();
         String type="";
-        Iterator<BookType> iter=bookTypes.iterator();
-        int c=0;
-        while (iter.hasNext()){
-            if(c>0)
-                type+=","+iter.next().getType();
-            else
-                type+=iter.next().getType();
-            c++;
+        if(bookTypeSet!=null && bookTypeSet.size()>0) {
+            Iterator<BookType> iter = bookTypeSet.iterator();
+            int c = 0;
+            while (iter.hasNext()) {
+                if (c > 0)
+                    type += "," + iter.next().getType();
+                else
+                    type += iter.next().getType();
+                c++;
+            }
         }
         ResExchangeBookInfoVO rebiv=new ResExchangeBookInfoVO(eb.getId(),eb.getBookName(),eb.getAuthor(),eb.getISBN(),
                 type,eb.getPress(),eb.getPublicationDate(),eb.getUser().getUsername(),eb.getExtra(),eb.isCanExchange(),
@@ -170,9 +184,54 @@ public class RestExchangeBookController {
         return responseEntity;
     }
 
+    @RequestMapping(value = "/exchangeBook/myBookInfo/{id}",method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<ResponseTemplate> getMySearchBookById(@PathVariable("id") String id)
+    {
+        if(!numberUtil.isPosNum(id))
+            throw new CustomException("参数校验失败",Code.METHOD_ARGUMENT_ERROR.getCode());
+        int bookId=Integer.valueOf(id);
+        ExchangeBook eb=exchangeBookService.getExchangeBookById(bookId);
+        if(eb==null)
+            throw new CustomException("id为"+id+"的图书不存在",Code.NOT_FOUND_ERROR.getCode());
+        Set<BookType> bookTypeSet=eb.getBookTypes();
+        List<String> types=new ArrayList<>();
+        if(bookTypeSet!=null && bookTypeSet.size()>0) {
+            for (BookType bt : bookTypeSet)
+                types.add(bt.getType());
+        }
+        ResMyExchangeBookInfoVO rmebiv=new ResMyExchangeBookInfoVO(eb.getId(),eb.getBookName(),eb.getAuthor(),eb.getISBN(),
+                new ArrayList<>(types),eb.getPress(),eb.getPublicationDate(), dateUtil.formatDate(eb.getReleaseDate(),"yyyy-MM-dd HH:mm:ss"),
+                eb.getExtra(),eb.isCanExchange());
+        ResponseTemplate<ResMyExchangeBookInfoVO> responseTemplate=new ResponseTemplate<ResMyExchangeBookInfoVO>(Code.SUCCESS.getCode(),rmebiv);
+        ResponseEntity<ResponseTemplate> responseEntity=new ResponseEntity<ResponseTemplate>(responseTemplate, HttpStatus.OK);
+        return responseEntity;
+    }
+
     @RequestMapping(value = "/exchangeBook/doReleaseBook", method= RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseTemplate> doReleaseExchangeBook(@RequestBody @Valid BookReleaseVO bookReleaseVO)
+    public ResponseEntity<ResponseTemplate> doReleaseExchangeBook(@RequestBody @Valid BookReleaseVO bookReleaseVO)throws ParseException
+    {
+        ExchangeBook eb=new ExchangeBook(bookReleaseVO.getBookName(),bookReleaseVO.getAuthor(),bookReleaseVO.getIsbn(),bookReleaseVO.getPress(),
+                dateUtil.parse(bookReleaseVO.getPublicationDate(),"yyyy-MM-dd"),bookReleaseVO.getExtra());
+        List<BookType> bookTypeList=bookTypeService.getBookTypes(bookReleaseVO.getTypes());
+        eb.setBookTypes(new HashSet<>(bookTypeList));
+        String email=(String)SecurityUtils.getSubject().getPrincipal();
+        User user=userService.findUserByEmail(email);
+        eb.setUser(user);
+        Calendar calendar= Calendar.getInstance();
+        eb.setReleaseDate(calendar.getTime());
+        Serializable id=exchangeBookService.save(eb);
+        if(id==null)
+            throw new CustomException("图书发布失败",Code.DATABASE_ACCESS_ERROR.getCode());
+        ResponseTemplate responseTemplate=new ResponseTemplate(Code.SUCCESS.getCode(),"图书发布成功");
+        ResponseEntity<ResponseTemplate> responseEntity=new ResponseEntity<ResponseTemplate>(responseTemplate,HttpStatus.OK);
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/exchangeBook/doModifyBook",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseTemplate> doModifyBook(@RequestBody @Valid BookReleaseVO bookReleaseVO)
     {
         return null;
     }

@@ -7,35 +7,46 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/5/21 0021.
+ * Created by Administrator on 2018/5/23 0023.
  */
-public class BookReleaseVO {
+public class BookModifyVO {
 
-    @NotBlank(message = "{BookReleaseVO.bookName.not.blank}")
-    @Length(max = 128,message = "{BookReleaseVO.bookName.max.length}")
+    @NotNull(message = "{BookModifyVO.id.not.null}")
+    private int id;
+
+    @NotBlank(message = "{BookModifyVO.bookName.not.blank}")
+    @Length(max = 128,message = "{BookModifyVO.bookName.max.length}")
     private String bookName;
 
-    @NotBlank(message = "{BookReleaseVO.author.not.blank}")
-    @Length(max = 128,message = "{BookReleaseVO.author.max.length}")
+    @NotBlank(message = "{BookModifyVO.author.not.blank}")
+    @Length(max = 128,message = "{BookModifyVO.author.max.length}")
     private String author;
 
-    @NotBlank(message = "{BookReleaseVO.isbn.not.blank}")
-    @Length(max = 128,message = "{BookReleaseVO.isbn.max.length}")
+    @NotBlank(message = "{BookModifyVO.isbn.not.blank}")
+    @Length(max = 128,message = "{BookModifyVO.isbn.max.length}")
     private String isbn;
 
     private List<String> types;
 
-    @Length(max = 128,message = "{BookReleaseVO.press.max.length}")
+    @Length(max = 128,message = "{BookModifyVO.press.max.length}")
     private String press;
 
-    @Length(max = 64,message = "{BookReleaseVO.publicationDate.max.length}")
+    @Length(max = 64,message = "{BookModifyVO.publicationDate.max.length}")
     private String publicationDate;
 
-    @NotNull(message="{BookReleaseVO.canExchange.not.null}")
+    @NotNull(message="{BookModifyVO.canExchange.not.null}")
     private Boolean canExchange;
 
-    @Length(max = 512,message = "{BookReleaseVO.extra.max.length}")
+    @Length(max = 512,message = "{BookModifyVO.extra.max.length}")
     private String extra;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getBookName() {
         return bookName;

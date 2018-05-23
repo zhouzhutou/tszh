@@ -91,7 +91,7 @@ public class RestAuthController {
         user.setRole(role);
         Serializable id=userService.save(user);
         if(id==null)
-            throw new CustomException("注册失败",Code.REGISTER_ERROR.getCode());
+            throw new CustomException("注册失败",Code.DATABASE_ACCESS_ERROR.getCode());
         ResponseTemplate responseTemplate=new ResponseTemplate(Code.SUCCESS.getCode(),"注册成功",registerVO);
         ResponseEntity<ResponseTemplate> responseEntity=new ResponseEntity<ResponseTemplate>(responseTemplate, HttpStatus.OK);
         return responseEntity;

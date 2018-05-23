@@ -48,7 +48,10 @@ public enum Code {
     HTTP_MEDIA_TYPE_NOT_SUPPORTED(2013),
 
     //服务器异常错误
-    RUNTIME_ERROR(2014);
+    RUNTIME_ERROR(2014),
+
+    //数据库访问错误
+    DATABASE_ACCESS_ERROR(2015);
 
 
     private int code;

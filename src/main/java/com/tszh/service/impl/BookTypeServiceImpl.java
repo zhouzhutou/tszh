@@ -31,6 +31,8 @@ public class BookTypeServiceImpl implements BookTypeService{
     @Override
     public List<BookType> getBookTypes(List<String> bookTypes) {
         //String[] bts=bookTypes.split(",");
+        if(bookTypes==null || bookTypes.size()==0)
+            return new ArrayList<>();
         StringBuilder sb=new StringBuilder("from BookType bt");
         Map<String,List<?>> params=new HashMap<>();
         if(bookTypes!=null && bookTypes.size()>0){
