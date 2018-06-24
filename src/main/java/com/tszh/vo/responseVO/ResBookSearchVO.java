@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/5/16 0016.
@@ -25,7 +26,7 @@ public class ResBookSearchVO {
 
     private String releaseDate;
 
-    private String type;
+    private List<String> types;
 
     private String owner;
 
@@ -87,12 +88,12 @@ public class ResBookSearchVO {
         this.releaseDate = releaseDate;
     }
 
-    public String getType() {
-        return type;
+    public List<String> getTypes() {
+        return types;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     public String getOwner() {

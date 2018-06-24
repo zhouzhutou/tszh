@@ -1,5 +1,6 @@
 package com.tszh.vo.requestVO;
 
+import com.tszh.custom_validator.DateV1;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class BookModifyVO {
 
     @NotNull(message = "{BookModifyVO.id.not.null}")
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "{BookModifyVO.bookName.not.blank}")
     @Length(max = 128,message = "{BookModifyVO.bookName.max.length}")
@@ -32,6 +33,7 @@ public class BookModifyVO {
     private String press;
 
     @Length(max = 64,message = "{BookModifyVO.publicationDate.max.length}")
+    @DateV1(message = "{BookModifyVO.applicationDate.illegal.format}")
     private String publicationDate;
 
     @NotNull(message="{BookModifyVO.canExchange.not.null}")
@@ -40,11 +42,11 @@ public class BookModifyVO {
     @Length(max = 512,message = "{BookModifyVO.extra.max.length}")
     private String extra;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

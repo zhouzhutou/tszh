@@ -298,6 +298,18 @@
             <version>2.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.6.2.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -333,6 +345,7 @@
             </resource>
             <resource>
                 <directory>src/main/resources/${profile.active}</directory>
+              <!--  <filtering>true</filtering>-->
             </resource>
         </resources>
 

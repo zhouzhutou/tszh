@@ -4,27 +4,29 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 /**
  * Created by Administrator on 2018/5/4 0004.
  */
-public class RegisterVO {
+public class RegisterVO implements Serializable{
 
     @NotBlank(message = "{RegisterVO.email.not.blank}")
     @Email(message = "{RegisterVO.email.illegal.format}")
     private String email;
 
     @NotBlank(message = "{RegisterVO.username.not.blank}")
-    @Length(max = 30,message = "{RegisterVO.username.max.length}")
+    @Length(max = 32,message = "{RegisterVO.username.max.length}")
     private String username;
 
     @NotBlank(message = "{RegisterVO.password.not.blank}")
     @Pattern(regexp = "^[a-zA-Z0-9_\\.]{6,30}$",message = "{RegisterVO.password.illegal.format}")
     private String password;
 
-    @NotBlank(message = "{RegisterVO.gender.not.blank}")
-    private String gender;
+    @NotNull(message = "{RegisterVO.gender.not.null}")
+    private Byte gender;
 
     public String getEmail() {
         return email;
@@ -50,11 +52,21 @@ public class RegisterVO {
         this.password = password;
     }
 
-    public String getGender() {
+    public Byte getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Byte gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "RegisterVO{" +
+                "email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", gender=" + gender +
+                '}';
     }
 }

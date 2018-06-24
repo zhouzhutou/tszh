@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/home/index.css"/>
     <link rel="stylesheet"  type="text/css" href="${pageContext.request.contextPath}/resources/plugin/jquery-easyui-1.5.4.5/themes/default/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/plugin/bootstrap-3.3.7/dist/css/bootstrap.css"/>
@@ -47,11 +47,10 @@
 
 <style type="text/css">
      .container-fluid{
-        width: 1920px;
+        width: 1800px !important;
         max-width: none !important;
     }
 </style>
-<
 <script type="text/javascript">
     $(document).ready(function () {
         $("#accordion .panel").each(function (index,element) {
@@ -62,7 +61,7 @@
         });
 
         function initialCollapse() {
-            var title=$("head title:first").text();
+            var title=$("head title:first").text().trim();
             //console.log(title);
             var t;
             if(title=="首页") {
@@ -79,7 +78,29 @@
             t.parent().siblings().children($(".collapse")).removeClass("in");
         }
         initialCollapse();
-    })
+
+        $("#logoutLink").click(function () {
+            $.ajax({
+                url:"/tszh/doLogout" ,
+                method:"GET",
+                dataType:"json",
+                success:function (result) {
+                    //var data=JSON.parse(result)
+                    //console.log(data);
+                    var res=result;
+                    if(res.code==2000){
+                        window.location.href="/tszh"
+                    }
+                },
+                error:function (e) {
+                    //console.log(e.responseText);
+                    var error=eval("("+e.responseText+")");
+                    toastr.error(error.message);
+                }
+            });
+        });
+
+    });
 </script>>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -95,100 +116,100 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">注销</a></li>
+                    <li><a id="logoutLink" href="#">注销</a></li>
                 </ul>
                 <p class="navbar-text navbar-right" style="color: grey"><shiro:principal/></p>
             </div>
         </div>
     </nav>
 
-<div class="container-fluid"style="padding-top: 50px;">
-    <div class="row">
-        <div class="col-sm-2 col-md-2">
+
+    <div class="container-fluid"style="padding-top: 50px;">
+        <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2">
             <div class="panel-group" id="accordion">
-
-                <div class="panel panel-default" id="panel_1">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapseOne">
-                                图书库
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <ul >
-                                <li><a href="${pageContext.request.contextPath}/home/bookSearch">图书检索</a></li>
-                                <li><a href="${pageContext.request.contextPath}/home/myBookSearch">我的图书</a></li>
-                            </ul>
+                    <div class="panel panel-default" id="panel_1">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseOne">
+                                    图书库
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul >
+                                    <li><a href="${pageContext.request.contextPath}/home/bookSearch">图书检索</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/myBookSearch">我的图书</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="panel panel-default" id="panel_2">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapseTwo">
-                                我的阅读
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <ul>
-                                <li><a>已阅图书</a></li>
-                                <li><a>待阅图书</a></li>
-                            </ul>
+                    <div class="panel panel-default" id="panel_2">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseTwo">
+                                    我的阅读
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul>
+                                    <li><a href="${pageContext.request.contextPath}/home/haveReadBooks">已阅图书</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/toReadBooks">待阅图书</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="panel panel-default" id="panel_3">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapseThree">
-                                我的置换
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <ul>
-                                <li><a href="${pageContext.request.contextPath}/home/exchangeBookApply">置换申请</a></li>
-                                <li><a href="${pageContext.request.contextPath}/home/exchangeBookItemSearch">置换记录</a></li>
-                            </ul>
+                    <div class="panel panel-default" id="panel_3">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseThree">
+                                    我的置换
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul>
+                                 <%--   <li><a href="${pageContext.request.contextPath}/home/exchangeBookApply">置换申请</a></li>--%>
+                                    <li><a href="${pageContext.request.contextPath}/home/exchangeBookItemSearch">置换记录</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel panel-default" id="panel_4">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapseFour">
-                                我的账户
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseFour" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <ul>
-                                <li><a>账户管理</a></li>
-                                <li><a>保证金管理</a></li>
-                            </ul>
+
+                    <div class="panel panel-default" id="panel_4">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseFour">
+                                    我的账户
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul>
+                                    <li><a href="${pageContext.request.contextPath}/home/accountInfo">账户信息</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/depositInfo">保证金信息</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-
             </div>
         </div>
-        <div class="col-sm-10 col-md-10">
+        <div class="col-xs-10 col-sm-10 col-md-10">
             <jsp:include page="${contentPath}"/>
         </div>
     </div>
-</div>
+    </div>
 
 </body>
 </html>

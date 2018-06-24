@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<h3>您好,用户${applyUserName}:</h3>
+<div style="margin-left: 36px">
+    <h3>您使用图书<span style="color: dodgerblue" style="font-weight: bold"> &lt;&lt;${myOwnBookName}&gt;&gt; </span>
+        申请置换用户${wishBookOwnerName}的图书<span style="color: dodgerblue" style="font-weight: bold"> &lt;&lt;${wishBookName}&gt;&gt; </span>
+        的申请（图书置换申请号为${exchangeItemId}）已过期。
+    </h3>
+</div>
+<div style="text-align: right">
+    ${currentDate}
+</div>
+</body>
+</html>

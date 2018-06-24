@@ -37,6 +37,14 @@ public interface BaseDao<T> {
     public void update(T o);
 
     /**
+     * 批量更新
+     * @param hql
+     * @param params
+     * @return
+     */
+    public int updateIn(String hql, Map<String,List<?>> params);
+
+    /**
      * 合并一个对象
      *
      * @param o

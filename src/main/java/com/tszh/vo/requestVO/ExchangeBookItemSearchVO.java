@@ -29,8 +29,13 @@ public class ExchangeBookItemSearchVO {
     private String bookName2;
 
     //申请日期
-    @DateV1(message = "{ExchangeBookItemSearchVO.applicationDate.illegal.format}")
-    private String applicationDate;
+    /*@DateV1(message = "{ExchangeBookItemSearchVO.applicationDate.illegal.format}")
+    private String applicationDate;*/
+    @DateV1(message = "{ExchangeBookItemSearchVO.startDate.illegal.format}")
+    private String startDate;
+
+    @DateV1(message = "{ExchangeBookItemSearchVO.endDate.illegal.format}")
+    private String endDate;
 
     //状态
     //@NotNull(message = "{ExchangeBookItemSearchVO.status.not.null}")
@@ -78,12 +83,20 @@ public class ExchangeBookItemSearchVO {
         this.bookName2 = bookName2;
     }
 
-    public String getApplicationDate() {
-        return applicationDate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setApplicationDate(String applicationDate) {
-        this.applicationDate = applicationDate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public Short getStatus() {
@@ -102,7 +115,8 @@ public class ExchangeBookItemSearchVO {
                 ", id='" + id + '\'' +
                 ", bookName1='" + bookName1 + '\'' +
                 ", bookName2='" + bookName2 + '\'' +
-                ", applicationDate='" + applicationDate + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
                 ", status=" + status +
                 '}';
     }

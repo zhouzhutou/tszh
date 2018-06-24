@@ -31,7 +31,7 @@ public class Address {
     private String county;
 
     @Column(length = 64)
-    private String streetAddress;
+    private String street;
 
     @OneToOne(targetEntity = User.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",referencedColumnName = "user_id",unique = true)
@@ -52,11 +52,11 @@ public class Address {
     public Address() {
     }
 
-    public Address(String province, String city, String county, String streetAddress) {
+    public Address(String province, String city, String county, String street) {
         this.province = province;
         this.city = city;
         this.county = county;
-        this.streetAddress = streetAddress;
+        this.street = street;
     }
 
     public int getId() {
@@ -91,12 +91,12 @@ public class Address {
         this.county = county;
     }
 
-    public String getStreetAddress() {
-        return streetAddress;
+    public String getStreet() {
+        return street;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public User getUser() {
@@ -138,7 +138,7 @@ public class Address {
                 ", province='" + province + '\'' +
                 ", city='" + city + '\'' +
                 ", county='" + county + '\'' +
-                ", streetAddress='" + streetAddress + '\'' +
+                ", streetAddress='" + street + '\'' +
                 ", user=" + user +
                 ", createAt=" + createAt +
                 ", updateAt=" + updateAt +

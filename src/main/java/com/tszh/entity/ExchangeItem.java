@@ -22,8 +22,8 @@ public class ExchangeItem {
     private String id;
 
     @ManyToOne(targetEntity = ExchangeBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
-    @JoinColumn(name="exchange_book_id",referencedColumnName = "exchange_book_id")
-    private ExchangeBook exchangeBook;
+    @JoinColumn(name="my_own_book_id",referencedColumnName = "exchange_book_id")
+    private ExchangeBook myOwnBook;
 
     @ManyToOne(targetEntity = ExchangeBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name="wish_book_id",referencedColumnName = "exchange_book_id")
@@ -31,7 +31,7 @@ public class ExchangeItem {
 
     @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name="apply_user_id",referencedColumnName = "user_id")
-    private User user;
+    private User applyUser;
 
    /* @OneToOne(targetEntity = WishBook.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name = "wish_book_id",referencedColumnName = "wish_book_id",unique = true)
@@ -40,8 +40,9 @@ public class ExchangeItem {
     /*@ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name="own_user_id",referencedColumnName = "user_id")
     private User owner;*/
-    @Column(length = 64)
-    private String wishBookOwner;
+    @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch =FetchType.LAZY)
+    @JoinColumn(name="wish_book_owner_id",referencedColumnName = "user_id")
+    private User wishBookOwner;
 
     @Column
     private short status;
@@ -69,9 +70,9 @@ public class ExchangeItem {
     public ExchangeItem() {
     }
 
-    public ExchangeItem(User user, ExchangeBook exchangeBook, ExchangeBook wishBook, String wishBookOwner, short status, Date applicationDate) {
-        this.exchangeBook = exchangeBook;
-        this.user = user;
+    public ExchangeItem(ExchangeBook myOwnBook, User applyUser, ExchangeBook wishBook, User wishBookOwner, short status, Date applicationDate) {
+        this.myOwnBook = myOwnBook;
+        this.applyUser = applyUser;
         this.wishBook = wishBook;
         this.wishBookOwner = wishBookOwner;
         this.status = status;
@@ -84,6 +85,38 @@ public class ExchangeItem {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public ExchangeBook getMyOwnBook() {
+        return myOwnBook;
+    }
+
+    public void setMyOwnBook(ExchangeBook myOwnBook) {
+        this.myOwnBook = myOwnBook;
+    }
+
+    public ExchangeBook getWishBook() {
+        return wishBook;
+    }
+
+    public void setWishBook(ExchangeBook wishBook) {
+        this.wishBook = wishBook;
+    }
+
+    public User getApplyUser() {
+        return applyUser;
+    }
+
+    public void setApplyUser(User applyUser) {
+        this.applyUser = applyUser;
+    }
+
+    public User getWishBookOwner() {
+        return wishBookOwner;
+    }
+
+    public void setWishBookOwner(User wishBookOwner) {
+        this.wishBookOwner = wishBookOwner;
     }
 
     public short getStatus() {
@@ -116,38 +149,6 @@ public class ExchangeItem {
 
     public void setExpiredDate(Date expiredDate) {
         this.expiredDate = expiredDate;
-    }
-
-    public ExchangeBook getExchangeBook() {
-        return exchangeBook;
-    }
-
-    public void setExchangeBook(ExchangeBook exchangeBook) {
-        this.exchangeBook = exchangeBook;
-    }
-
-    public ExchangeBook getWishBook() {
-        return wishBook;
-    }
-
-    public void setWishBook(ExchangeBook wishBook) {
-        this.wishBook = wishBook;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getWishBookOwner() {
-        return wishBookOwner;
-    }
-
-    public void setWishBookOwner(String wishBookOwner) {
-        this.wishBookOwner = wishBookOwner;
     }
 
     public Date getCreateAt() {

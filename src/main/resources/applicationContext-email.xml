@@ -16,9 +16,9 @@
 
    <!-- <context:property-placeholder ignore-unresolvable="true" location="classpath:mail.properties"/>-->
 
-    <bean id="mailPropertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!--<bean id="mailPropertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:mail.properties"/>
-    </bean>
+    </bean>-->
 
     <bean id="mailProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="classpath:mail.properties"/>
@@ -35,8 +35,9 @@
             <props>
                 <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
                 <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
-              <!--  <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
-                <prop key="mail.smtp.socketFactory.port">${mail.smtp.port}</prop>
+                <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+               <!-- <prop key="mail.smtp.socketFactory.port">${mail.smtp.port}</prop>
                 <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
                 <prop key="mail.smtp.socketFactory.fallback">false</prop>-->
             </props>
@@ -48,6 +49,8 @@
             <value>
                 resource.loader=class
                 class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                input.encoding=UTF-8
+                output.encoding=UTF-8
             </value>
         </property>
     </bean>

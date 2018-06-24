@@ -3,6 +3,7 @@ package com.tszh.vo.responseVO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/5/18 0018.
@@ -18,7 +19,7 @@ public class ResExchangeBookInfoVO {
 
     private String isbn;
 
-    private String type;
+    private List<String> types;
 
     private String press;
 
@@ -36,13 +37,13 @@ public class ResExchangeBookInfoVO {
     }
 
 
-    public ResExchangeBookInfoVO(int id, String bookName, String author, String isbn, String type, String press,
+    public ResExchangeBookInfoVO(int id, String bookName, String author, String isbn, List<String> types, String press,
                                  Date publicationDate, String owner, String extra, boolean canExchange,String releaseDate) {
         this.id = id;
         this.bookName = bookName;
         this.author = author;
         this.isbn = isbn;
-        this.type = type;
+        this.types = types;
         this.press = press;
         this.publicationDate = publicationDate;
         this.owner = owner;
@@ -83,12 +84,12 @@ public class ResExchangeBookInfoVO {
         this.isbn = isbn;
     }
 
-    public String getType() {
-        return type;
+    public List<String> getTypes() {
+        return types;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     public String getPress() {

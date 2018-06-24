@@ -1,9 +1,7 @@
 package com.tszh.controller;
 
-import com.tszh.entity.Address;
-import com.tszh.entity.Permission;
-import com.tszh.entity.Role;
-import com.tszh.entity.User;
+import com.tszh.entity.*;
+import com.tszh.redis_cache.RedisCache;
 import com.tszh.service.*;
 import com.tszh.util.CryptographyUtil;
 import com.tszh.util.GenAuthCodeUtil;
@@ -14,13 +12,17 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -107,7 +109,7 @@ public class HelloWorldController {
         address.setCity("成都市");
         address.setCounty("邛崃市");
         address.setProvince("四川省");
-        address.setStreetAddress("玉带街66号");
+        address.setStreet("玉带街66号");
         address.setUser(user);
         addressService.save(address);
        /* Permission p1=new Permission();
@@ -138,18 +140,40 @@ public class HelloWorldController {
     @Autowired
     private GenAuthCodeUtil genAuthCodeUtil;
 
+    @Autowired
+    @Qualifier("mailProperties")
+    private Properties mailProperties;
+
     @RequestMapping("/testEmail")
     @ResponseBody
-    public ResponseEntity<ResponseTemplate> emailTest()
+    public ResponseEntity<ResponseTemplate> emailTest() throws InterruptedException
     {
-        String registerAuthCode=genAuthCodeUtil.getAuthCode(4);
-        System.out.println(registerAuthCode);
-       emailService.sendValidateEmail("注册","2396621573@qq.com",
-               registerAuthCode);
-       ResRegisterVO registerVO=new ResRegisterVO("2396621573@qq.com",registerAuthCode);
-       ResponseTemplate<ResRegisterVO> responseTemplate=new ResponseTemplate<ResRegisterVO>(2000,registerVO);
-       ResponseEntity<ResponseTemplate> responseEntity=new ResponseEntity<ResponseTemplate>(responseTemplate,
+        String registerAuthCode=genAuthCodeUtil.getAuthCode(6);
+        //System.out.println(registerAuthCode);
+        System.out.println("1231");
+        System.out.println("1232");
+        //Email email=new VerifyEmail(mailProperties.getProperty("mail.smtp.username"),"1394854927@qq.com",
+                //"图书置换系统注册邮件","/view/mail/register.vm",new Date(),registerAuthCode);
+        Email email=new VerifyEmail(mailProperties.getProperty("mail.smtp.username"),"1394854927@qq.com",
+                "图书置换重置密码邮件","/view/mail/forgetPassword.vm",new Date(),registerAuthCode,"zhouzhutou");
+        System.out.println("1233");
+        emailService.sendEmail(email);
+        System.out.println("1234");
+        ResRegisterVO registerVO=new ResRegisterVO("1394854927@qq.com","zhouzhutou",(byte)0);
+        ResponseTemplate<ResRegisterVO> responseTemplate=new ResponseTemplate<ResRegisterVO>(2000,registerVO);
+        ResponseEntity<ResponseTemplate> responseEntity=new ResponseEntity<ResponseTemplate>(responseTemplate,
                HttpStatus.OK);
-       return responseEntity;
+        return responseEntity;
+    }
+
+    @Autowired
+    private RedisCache redisCache;
+
+    @RequestMapping("/testRedis")
+    @ResponseBody
+    public ResponseEntity<ResponseTemplate> redisTest()
+    {
+        redisCache.put("zwx","zhouzhutou");
+        return null;
     }
 }

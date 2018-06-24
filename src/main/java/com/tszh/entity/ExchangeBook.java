@@ -61,9 +61,6 @@ public class ExchangeBook {
     private Date publicationDate;
 
     @Column
-    private short type=0;
-
-    @Column
     private String extra;
 
     @Column
@@ -72,7 +69,7 @@ public class ExchangeBook {
     @Column
     private boolean canExchange=true;
 
-    @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinColumn(name="user_id",referencedColumnName = "user_id")
     private User user;
 
@@ -82,7 +79,7 @@ public class ExchangeBook {
             inverseJoinColumns = @JoinColumn(name = "booktype_id",referencedColumnName = "booktype_id"))
     private Set<BookType> bookTypes=new HashSet<>();
 
-    @OneToMany(targetEntity = ExchangeItem.class,mappedBy = "exchangeBook")
+    @OneToMany(targetEntity = ExchangeItem.class,fetch = FetchType.LAZY)
     private Set<ExchangeItem> exchangeItems;
 
     @CreationTimestamp
@@ -107,6 +104,8 @@ public class ExchangeBook {
         this.publicationDate = publicationDate;
         this.extra = extra;
     }
+
+
 
     public Set<ExchangeItem> getExchangeItems() {
         return exchangeItems;
@@ -170,14 +169,6 @@ public class ExchangeBook {
 
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
-    }
-
-    public short getType() {
-        return type;
-    }
-
-    public void setType(short type) {
-        this.type = type;
     }
 
     public String getExtra() {

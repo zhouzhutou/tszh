@@ -1,6 +1,12 @@
 package com.tszh.vo.responseVO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * Created by Administrator on 2018/5/16 0016.
@@ -10,14 +16,18 @@ public class ResRegisterVO {
 
     private String email;
 
-    private String authCode;
+    private String username;
 
-    public ResRegisterVO(){}
+    private Byte gender;
 
-    public ResRegisterVO(String email, String authCode)
-    {
-        this.email=email;
-        this.authCode=authCode;
+    public ResRegisterVO(){
+
+    }
+
+    public ResRegisterVO(String email, String username, Byte gender) {
+        this.email = email;
+        this.username = username;
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -26,5 +36,21 @@ public class ResRegisterVO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Byte getGender() {
+        return gender;
+    }
+
+    public void setGender(Byte gender) {
+        this.gender = gender;
     }
 }

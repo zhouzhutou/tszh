@@ -1,6 +1,7 @@
 package com.tszh.service;
 
 import com.tszh.entity.ExchangeBook;
+import com.tszh.entity.ExchangeItem;
 import com.tszh.entity.User;
 import com.tszh.vo.BootstrapTableResult;
 import com.tszh.vo.requestVO.BookSearchVO;
@@ -22,11 +23,29 @@ public interface ExchangeBookService {
     public Serializable save(ExchangeBook exchangeBook);
 
     /**
+     * 修改用于置换的图书
+     * @param exchangeBook
+     */
+    public void update(ExchangeBook exchangeBook);
+    /**
      * 根据id值获取置换的图书
      * @param id
      * @return
      */
     public ExchangeBook getExchangeBookById(int id);
+
+    /**
+     * 根据图书id删除图书
+     * @param id
+     */
+    public void deleteExchangeBookById(int id);
+
+    /**
+     * 根据图书id列表删除图书
+     * @param ids
+     * @return
+     */
+    public int deleteExchangeBooksByIds(List<Integer> ids);
 
     /**
      * 按条件获取数据的总数
@@ -58,4 +77,19 @@ public interface ExchangeBookService {
      * @return
      */
     List<ExchangeBook> findByIsbn(String isbn);
+
+    /**
+     * 根据id判断图书可否置换
+     * @param id
+     * @return
+     */
+    ExchangeBook findCanExchangeBookById(int id);
+
+    /**
+     * 根据id查找可置换图书（fetch User）
+     * @param id
+     * @return
+     */
+    public ExchangeBook findCanExchangeBookFetchUserById(int id);
+
 }

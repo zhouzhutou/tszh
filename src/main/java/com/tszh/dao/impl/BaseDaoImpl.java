@@ -54,6 +54,16 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
+    public int updateIn(String hql, Map<String,List<?>> params)
+    {
+        Query query=this.getCurrentSession().createQuery(hql);
+        for(Map.Entry<String,List<?>> entry : params.entrySet()){
+            query.setParameterList(entry.getKey(),entry.getValue());
+        }
+        return query.executeUpdate();
+    }
+
+    @Override
     public void merge(T o) {
         this.getCurrentSession().merge(o);
     }

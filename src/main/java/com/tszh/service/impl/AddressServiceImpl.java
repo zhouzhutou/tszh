@@ -23,4 +23,9 @@ public class AddressServiceImpl implements AddressService {
     public Serializable save(Address address) {
         return addressDao.save(address);
     }
+
+    @Override
+    public void update(Address address){
+        addressDao.update(address);
+    }
 }

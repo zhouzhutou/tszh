@@ -26,6 +26,10 @@ public class BookSearchVO {
 
     private String bookType;
 
+    private String bookOwner;
+
+    private Boolean canExchange;
+
     public Integer getPageSize() {
         return pageSize;
     }
@@ -82,6 +86,22 @@ public class BookSearchVO {
         this.bookType = bookType;
     }
 
+    public String getBookOwner() {
+        return bookOwner;
+    }
+
+    public void setBookOwner(String bookOwner) {
+        this.bookOwner = bookOwner;
+    }
+
+    public Boolean getCanExchange() {
+        return canExchange;
+    }
+
+    public void setCanExchange(Boolean canExchange) {
+        this.canExchange = canExchange;
+    }
+
     @Override
     public String toString() {
         return "BookSearchVO{" +
@@ -92,6 +112,8 @@ public class BookSearchVO {
                 ", press='" + press + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", bookType='" + bookType + '\'' +
+                ", bookOwner='" + bookOwner + '\'' +
+                ", canExchange=" + canExchange +
                 '}';
     }
 }

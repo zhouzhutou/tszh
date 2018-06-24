@@ -5,6 +5,7 @@ import com.tszh.entity.WishBook;
 import com.tszh.service.WishBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * Created by Administrator on 2018/5/17 0017.
  */
 @Service("wishBookService")
+@Transactional
 public class WishBookServiceImpl implements WishBookService{
 
     @Autowired

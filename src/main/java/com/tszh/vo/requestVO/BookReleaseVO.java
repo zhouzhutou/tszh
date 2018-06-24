@@ -1,5 +1,6 @@
 package com.tszh.vo.requestVO;
 
+import com.tszh.custom_validator.DateV1;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -29,6 +30,7 @@ public class BookReleaseVO {
     private String press;
 
     @Length(max = 64,message = "{BookReleaseVO.publicationDate.max.length}")
+    @DateV1(message = "{BookReleaseVO.applicationDate.illegal.format}")
     private String publicationDate;
 
     @NotNull(message="{BookReleaseVO.canExchange.not.null}")

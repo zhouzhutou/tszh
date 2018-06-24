@@ -26,7 +26,7 @@ public class User {
     @GeneratedValue(generator = "gen_identity")
     private int id;
 
-    @Column(length = 64)
+    @Column(length = 64, nullable = false)
     private String username;
 
     @Column(length = 64)
@@ -41,11 +41,18 @@ public class User {
     @Column
     private byte sex;//0-男，1-女
 
+    @Column
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
+
+    @Column(length = 64)
+    private String phone;
+
     @OneToOne(targetEntity = Address.class,mappedBy = "user",fetch = FetchType.LAZY)
     private Address address;
 
     @Column
-    private int deposit;
+    private float deposit;
 
     @OneToMany(targetEntity = ExchangeBook.class,mappedBy = "user",fetch = FetchType.LAZY)
     Set<ExchangeBook> exchangeBooks=new HashSet<>();
@@ -53,7 +60,7 @@ public class User {
 /*    @OneToMany(targetEntity = WishBook.class,mappedBy = "user",fetch = FetchType.LAZY)
     Set<WishBook> wishBooks=new HashSet<>();*/
 
-    @OneToMany(targetEntity = ExchangeItem.class,mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = ExchangeItem.class,fetch = FetchType.LAZY)
     Set<ExchangeItem> exchangeItems;
 
     @ManyToOne(targetEntity = Role.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -124,6 +131,22 @@ public class User {
         this.sex = sex;
     }
 
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -132,11 +155,11 @@ public class User {
         this.address = address;
     }
 
-    public int getDeposit() {
+    public float getDeposit() {
         return deposit;
     }
 
-    public void setDeposit(int deposit) {
+    public void setDeposit(float deposit) {
         this.deposit = deposit;
     }
 
@@ -205,6 +228,8 @@ public class User {
                 ", salt='" + salt + '\'' +
                 ", password='" + password + '\'' +
                 ", sex=" + sex +
+                ", birthday=" + birthday +
+                ", phone='" + phone + '\'' +
                 ", address=" + address +
                 ", deposit=" + deposit +
                 ", exchangeBooks=" + exchangeBooks +

@@ -14,11 +14,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/plugin/layer/theme/default/layer.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugin/layer/layer.js"></script>
 </head>
-<style type="text/css">
-    .label_div{
-        margin-bottom: 3px;
-    }
-</style>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -66,6 +61,29 @@
                 bookType:booktype
             }
             return params;
+        }
+
+        function maxLengthFormatter(value,row,index) {
+            if(value.length>20){
+                var str=value.substr(0,20);
+                str+="...";
+                return str;
+            }
+            return value;
+        }
+
+        function typeFormatter(value,row,index)
+        {
+            var str='';
+            for(var i=0;i<value.length;i++){
+                if(i>0)
+                    str+=','+value[i];
+                else
+                    str+=value[i];
+            }
+            if(str.length>20)
+                return str.substr(0,20)+"...";
+            return str;
         }
 
         function canExchangeFormatter(value, row, index)
@@ -120,70 +138,77 @@
                         }
 
                 },
-                {
-                    field: 'id',
-                    align:'left',
-                    visible:false,
-                    title: '图书id'
-                },
-                {
-                    field: 'bookName',
-                    align:'left',
-                    valign:'middle',
-                    title: '图书名称'
-                },
-                {
-                    field: 'author',
-                    align:'left',
-                    valign:'middle',
-                    title: '作者'
-                },
-                {
-                    field: 'isbn',
-                    align:'left',
-                    valign:'middle',
-                    title: 'ISBN'
-                },
-                {
-                    field: 'press',
-                    align:'left',
-                    valign:'middle',
-                    title: '出版社'
-                },
-                {
-                    field: 'publicationDate',
-                    align:'left',
-                    valign:'middle',
-                    title: '出版日期'
-                },
-                {
-                    field: 'type',
-                    align:'left',
-                    valign:'middle',
-                    title: '图书类型'
-                },
-                {
-                    field: 'releaseDate',
-                    align:'left',
-                    valign:'middle',
-                    title: '发布日期'
-                },
-                {
-                    field: 'canExchange',
-                    align:'left',
-                    valign:'middle',
-                    width:25,
-                    title: '可否交换',
-                    formatter: canExchangeFormatter
-                },
-                {
-                    title: '操作',
-                    align:'center',
-                    valign:'middle',
-                    field: 'operate',
-                    formatter: operateFormatter
-                }
-            ],
+        {
+            field: 'id',
+            align:'left',
+            title: '图书id',
+            visible:false
+        },
+        {
+            field: 'bookName',
+            align:'left',
+            valign:'middle',
+            title: '图书名称',
+            formatter:maxLengthFormatter
+        },
+        {
+            field: 'author',
+            align:'left',
+            valign:'middle',
+            title: '作者',
+            formatter:maxLengthFormatter
+        },
+        {
+            field: 'isbn',
+            align:'left',
+            valign:'middle',
+            title: 'ISBN',
+            formatter:maxLengthFormatter
+        },
+        {
+            field: 'press',
+                align:'left',
+            valign:'middle',
+            title: '出版社',
+            formatter:maxLengthFormatter
+        },
+        {
+            field: 'publicationDate',
+                align:'left',
+            valign:'middle',
+            title: '出版日期',
+            formatter:maxLengthFormatter
+        },
+        {
+            field: 'types',
+            align:'left',
+            valign:'middle',
+            title: '图书类型',
+            formatter:typeFormatter
+        },
+        {
+            field: 'releaseDate',
+                align:'left',
+            valign:'middle',
+            title: '发布日期',
+            formatter:maxLengthFormatter
+        },
+        {
+            field: 'canExchange',
+                align:'left',
+            valign:'middle',
+            width:20,
+            title: '可否交换',
+            formatter: canExchangeFormatter
+        },
+        {
+            title: '操作',
+                align:'center',
+            valign:'middle',
+            field: 'operate',
+            formatter: operateFormatter
+        }
+        ],
             onLoadError: function () {
                 toastr.error("数据加载失败！");
             }
@@ -267,7 +292,7 @@
                 extra:{
                     validators:{
                         stringLength:{
-                            max:128,
+                            max:512,
                             message: '备注长度不能超过512个字符'
                         }
                     }
@@ -324,6 +349,7 @@
             slpk1.selectpicker('refresh')
             slpk1.selectpicker('val','');
         }
+        /*添加置换图书*/
         $("#aebm_submitBtn").click(function () {
             var bootstrapValidator=$("#exchange_book_release_form").data('bootstrapValidator');
             bootstrapValidator.validate();
@@ -395,13 +421,13 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields:{
-                id:{
+              /*  id:{
                     validators:{
                         notEmpty:{
                             message:'图书id不能为空'
                         }
                     }
-                },
+                },*/
                 bookName: {
                     validators: {
                         notEmpty: {
@@ -455,7 +481,7 @@
                 extra:{
                     validators:{
                         stringLength:{
-                            max:128,
+                            max:512,
                             message: '备注长度不能超过512个字符'
                         }
                     }
@@ -544,6 +570,7 @@
                             }else{
                                 data['canExchange']=false;
                             }
+                            //console.log(data);
                             var postData=JSON.stringify(data);
                             $.ajax({
                                 url:"/tszh/exchangeBook/doModifyBook" ,
@@ -632,15 +659,86 @@
             }
         });
     }
+    /*根据id删除图书*/
+    function deleteExBookById(id){
+        var operate="删除";
+        layer.confirm("<div style='text-align: center;margin-top: 50px;font-size: 16px'>确认"+operate+"图书？</div>", {type:1,btnAlign: 'c',area:['200px','150px'],title:false,btn:["确认","取消"]},
+            function () {
+                layer.closeAll();
+                $.ajax({
+                    url:"/tszh/exchangeBook/doDeleteBook/"+id ,
+                    method:"GET",
+                    dataType:"json",
+                    async:true,
+                    success:function (result) {
+                        var res=result;
+                        if(res.code==2000){
+                            toastr.success(res.message);
+                            $("#searchForm").find($("input:text")).val("");
+                            select=$("#slpk");
+                            select.selectpicker('refresh');
+                            select.selectpicker('val','');
+                            $('#table').bootstrapTable('refresh',{pageNumber:1});
+                        }
+                    },
+                    error:function (e) {
+                        //console.log(e.responseText);
+                        var error=eval("("+e.responseText+")");
+                        toastr.error(error.message);
+                    }
+                });
+            },
+            function () {
+                layer.close();
+            }
+        )
+    }
+
 </script>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <ol class="breadcrumb" style="padding-left: 0">
     <li><a href="#" style="color: black;font-size: 18px;">tszh</a></li>
-    <li><a href="${pageContext.request.contextPath}/home/bookSearch" name="navbar2">我的图书</a></li>
+    <li><a href="${pageContext.request.contextPath}/home/myBookSearch" name="navbar2">我的图书</a></li>
 </ol>
 <div>
     <div style="font-family:宋体;color: #3c3c3c;font-size: 16px;margin-bottom: 10px;font-weight: 600">查询条件</div>
-    <form class="form-inline" id="searchForm">
+    <form id="searchForm" class="form-horizontal">
+        <div class="form-group" style="margin-left: -56px">
+            <label for="bookName" class="control-label col-xs-1 col-sm-1 col-md-1">图书名称</label>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <input type="text" class="form-control" id="bookName" name="bookName"/>
+            </div>
+            <label for="author" class="control-label col-xs-1 col-sm-1 col-md-1">图书作者</label>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <input type="text" class="form-control" id="author" name="author"/>
+            </div>
+            <label for="press" class="control-label col-xs-1 col-sm-1 col-md-1">出版社</label>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <input type="text" class="form-control" id="press" name="press"/>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left: -56px">
+            <label for="isbn" class="control-label col-xs-1 col-sm-1 col-md-1">ISBN</label>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <input type="text" class="form-control" id="isbn" name="isbn"/>
+            </div>
+            <label for="slpk" class="control-label col-xs-1 col-sm-1 col-md-1">图书种类</label>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <select id="slpk" class="selectpicker form-control">
+                    <option value="">--请选择--</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group text-right" style="margin-top: 20px; margin-right: 0px">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-xs-offset-6 col-sm-offset-6 col-md-offset-6">
+                <input class="btn btn-primary" type="button" value="查询"
+                       style="background-color: #3c3c3c;border-color:#3c3c3c" id="search"/>
+                <input class="btn btn-default" type="button" value="重置" id="reset"/>
+            </div>
+        </div>
+    </form>
+    <%--<form class="form-inline" id="searchForm">
         <div class="row">
             <div class="col-sm-2 col-md-2">
                 <div class="label_div"><label class="control-label">图书名称：</label></div>
@@ -659,7 +757,7 @@
                 <input id="isbn" type="text" class="form-control"/>
             </div>
             <div class="col-sm-2 col-md-2">
-                <div  class="label_div"><label class="control-label">图书种类：</label></div>
+                <div  class="label_div"><label class="control-label">图书类型：</label></div>
                 <select id="slpk" class="selectpicker">
                     <option value="">--请选择--</option>
                 </select>
@@ -673,20 +771,20 @@
                 <input class="btn btn-default" type="button" value="重置" id="reset">
             </div>
         </div>
-    </form>
-</div>
-<div class="row">
-    <div class="col-sm-10 col-md-10"
-         style="height: 20px;border-bottom-color: #b94a48;border-bottom-style: solid;border-bottom-width: 2px">
+    </form>--%>
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10"
+             style="height: 20px;border-bottom-color: #b94a48;border-bottom-style: solid;border-bottom-width: 2px">
+        </div>
     </div>
-</div>
-<%--       table      --%>
-<div class="row">
-    <div class="col-sm-10 col-md-10">
-        <button class="btn btn-success" style="margin-top: 20px" id="exBookReleaseBtn">发布图书
-            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+    <%--       table      --%>
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10">
+            <button class="btn btn-success" style="margin-top: 20px" id="exBookReleaseBtn">发布图书
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
 
-        <table id="table"></table>
+            <table id="table"></table>
+        </div>
     </div>
 </div>
 <%--modal addExBookModal--%>
@@ -699,45 +797,45 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
                         <form id="exchange_book_release_form" class="form-horizontal text-center">
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">图书名称</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">图书名称</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="bookName" />
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">图书作者</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">图书作者</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="author" />
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">ISBN</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">ISBN</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="isbn" />
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">图书类型</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">图书类型</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <select id="addExBookSlpk1" class="selectpicker form-control" multiple>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">出版社</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">出版社</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="press" />
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">出版日期</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">出版日期</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input  type="text" class="form-control" id="aebmPublicationDate" name="publicationDate" readonly/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">可否交换</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">可否交换</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <select id="addExBookSlpk2" class="selectpicker form-control" disabled="disabled">
                                         <%--<option value="">--请选择--</option>--%>
                                         <option value="1" selected="selected">是</option>
@@ -747,8 +845,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">备注</label>
-                                <div class="col-sm-6 col-md-6">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">备注</label>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
                                     <textarea class="form-control txtarea" name="extra" rows="6" data-bv-stringlength data-bv-stringlength-max="150"
                                               data-bv-stringlength-message="备注长度不超过150个字符"></textarea>
                                 </div>
@@ -776,53 +874,53 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
                         <form id="exchange_book_info_form" class="form-horizontal text-center">
                             <div class="form-group hidden">
                                 <%--图书id--%>
                                 <input type="text" name="id" disabled="disabled"/>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">图书名称</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">图书名称</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="bookName" readonly/>
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">图书作者</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">图书作者</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="author" readonly/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">ISBN</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">ISBN</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="isbn" readonly/>
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">图书类型</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">图书类型</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <select id="exBookInfoSlpk1" class="selectpicker form-control" disabled="disabled" multiple>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">出版社</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">出版社</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input type="text" class="form-control" name="press" readonly/>
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">出版日期</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">出版日期</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input  type="text" class="form-control" id="ebimPublicationDate" name="publicationDate" readonly/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">发布日期</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">发布日期</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <input  type="text" class="form-control" name="releaseDate" readonly/>
                                 </div>
-                                <label class="col-sm-2 col-md-2 control-label">可否交换</label>
-                                <div class="col-sm-3 col-md-3">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">可否交换</label>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <select id="exBookInfoSlpk2" class="selectpicker form-control" disabled="disabled">
                                         <%--<option value="">--请选择--</option>--%>
                                         <option value="1">是</option>
@@ -832,8 +930,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 col-md-2 control-label">备注</label>
-                                <div class="col-sm-6 col-md-6">
+                                <label class="col-xs-2 col-sm-2 col-md-2 control-label">备注</label>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
                                     <textarea class="form-control txtarea" id="extra" name="extra" rows="6" data-bv-stringlength data-bv-stringlength-max="150"
                                               data-bv-stringlength-message="备注长度不超过150个字符" readonly></textarea>
                                 </div>

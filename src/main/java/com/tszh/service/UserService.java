@@ -4,6 +4,7 @@ package com.tszh.service;
 
 import com.tszh.entity.Role;
 import com.tszh.entity.User;
+import com.tszh.vo.requestVO.RechargeAccountVO;
 
 import java.io.Serializable;
 
@@ -24,6 +25,13 @@ public interface UserService {
      * @param user
      */
     public void update(User user);
+
+    /**
+     * 根据id查找用户
+     * @param id
+     * @return
+     */
+    public User findUserById(int id);
 
     /**
      * 根据邮件地址查找用户信息
@@ -53,5 +61,19 @@ public interface UserService {
      * @return
      */
     public int countByEmail(String email);
+
+    /**
+     * 通过email获取User的全部信息
+     * @param email
+     * @return
+     */
+    public User findAllUserInfoByEmail(String email);
+
+    /**
+     * 充值保证金
+     * @param rechargeAccountVO
+     * @return
+     */
+    public Integer addDeposit(RechargeAccountVO rechargeAccountVO);
 
 }

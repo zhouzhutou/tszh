@@ -36,7 +36,7 @@ public class CustomRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         String email=(String)principalCollection.getPrimaryPrincipal();
         Role role=userService.getRoleByEmail(email);
-        System.out.println("role: "+role.getRoleName());
+        //System.out.println("role: "+role.getRoleName());
         simpleAuthorizationInfo.addRole(role.getRoleName());
        /* Set<Permission> permissions=role.getPermissions();
         Set<String> permissList=new HashSet<>();

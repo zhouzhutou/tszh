@@ -16,4 +16,10 @@ public interface AddressService {
      * @return
      */
     public Serializable save(Address address);
+
+    /**
+     * 修改地址
+     * @param address
+     */
+    public void update(Address address);
 }

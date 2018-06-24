@@ -11,6 +11,6 @@
     <title>权限不够</title>
 </head>
 <body>
-<p>权限不足，无法访问</p>
+<p style="text-align: center;margin-top: 100px">权限不足，无法访问</p>
 </body>
 </html>

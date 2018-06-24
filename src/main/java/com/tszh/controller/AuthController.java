@@ -80,6 +80,47 @@ public class AuthController {
         return "auth/auth_common";
     }
 
+    @RequestMapping(value = "/matchRegisterVerifyCode",method = RequestMethod.GET)
+    public String matchRegisterVerifyCode(@RequestParam("email") String email,HttpServletRequest request)
+    {
+        Subject subject=SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            if(subject.hasRole("user"))
+                return "redirect:/home";
+        }
+        request.setAttribute("email",email);
+        request.setAttribute("title","注册");
+        request.setAttribute("contentPath","matchRegisterVerifyCode.jsp");
+        return "auth/auth_common";
+    }
+
+    @RequestMapping(value = "/forgetPassword",method = RequestMethod.GET)
+    public String forgetPassword(HttpServletRequest request)
+    {
+        Subject subject=SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            if(subject.hasRole("user"))
+                return "redirect:/home";
+        }
+        request.setAttribute("title","忘记密码");
+        request.setAttribute("contentPath","forgetPassword.jsp");
+        return "auth/auth_common";
+    }
+
+    @RequestMapping(value = "/resetPassword",method = RequestMethod.GET)
+    public String resetPassowrd(@RequestParam("email") String email, HttpServletRequest request)
+    {
+        Subject subject=SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            if(subject.hasRole("user"))
+                return "redirect:/home";
+        }
+        request.setAttribute("email",email);
+        request.setAttribute("title","重置密码");
+        request.setAttribute("contentPath","resetPassword.jsp");
+        return "auth/auth_common";
+    }
+
     @RequestMapping(value = "/unauthorized")
     public String unauthorized()
     {

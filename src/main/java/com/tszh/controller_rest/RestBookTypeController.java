@@ -6,6 +6,8 @@ import com.tszh.exception.CustomException;
 import com.tszh.service.BookTypeService;
 import com.tszh.vo.ResponseTemplate;
 import com.tszh.vo.responseVO.ResGetBookTypesVO;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,7 @@ public class RestBookTypeController {
 
     @RequestMapping(value = "/bookType/getBookTypes",method = RequestMethod.GET)
     @ResponseBody
+    @RequiresRoles(value = {"user,admin"},logical = Logical.OR)
     public ResponseEntity<ResponseTemplate> getBookTypes(HttpServletRequest request, HttpServletResponse response)
     {
         List<BookType> bookTypeList=bookTypeService.getBookTypes();

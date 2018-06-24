@@ -15,7 +15,7 @@
 
     <description>shiro configuration</description>
 
-    <context:property-placeholder ignore-unresolvable="true" location="classpath:session-manage.properties"/>
+   <!-- <context:property-placeholder ignore-unresolvable="true" location="classpath:session-manage.properties"/>-->
 
     <!--配置shiro的EhcacheManager-->
     <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
@@ -77,8 +77,14 @@
                 /doLogin=anon
                 /register=anon
                 /doRegister=anon
+                /matchRegisterVerifyCode=anon
+                /doMatchRegisterVerifyCode=anon
+                /forgetPassword=anon
+                /doForgetPassword=anon
+                /resetPassword=anon
+                /doResetPassword=anon
                 /unauthorized=anon
-                /logout=logout
+                <!--/doLogout=logout-->
                 /resources/** = anon
                 /view/**=anon
                 /**=authc

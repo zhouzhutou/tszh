@@ -1,8 +1,11 @@
 package com.tszh.vo.requestVO;
 
 import com.tszh.custom_validator.DateV1;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -12,162 +15,115 @@ import java.util.List;
  */
 public class ExchangeBookApplyVO {
 
-    @NotBlank(message = "{ExchangeBookApplyVO.bookName.not.blank}")
-    private String bookName1;
+    private Integer myOwnBookId;
+
+    @NotNull(message = "{ExchangeBookApplyVO.wishBookId.not.null}")
+    private Integer wishBookId;
 
     @NotBlank(message = "{ExchangeBookApplyVO.bookName.not.blank}")
-    private String bookName2;
+    @Length(max = 128,message = "{ExchangeBookApplyVO.bookName.max.length}")
+    private String bookName;
 
     @NotBlank(message = "{ExchangeBookApplyVO.author.not.blank}")
-    private String author1;
-
-    @NotBlank(message = "{ExchangeBookApplyVO.author.not.blank}")
-    private String author2;
+    @Length(max = 128,message = "{ExchangeBookApplyVO.author.max.length}")
+    private String author;
 
     @NotBlank(message = "{ExchangeBookApplyVO.isbn.not.blank}")
-    private String isbn1;
+    @Length(max = 128,message = "{ExchangeBookApplyVO.isbn.max.length}")
+    private String isbn;
 
-    @NotBlank(message = "{ExchangeBookApplyVO.isbn.not.blank}")
-    private String isbn2;
+    private List<String> types;
 
-    private List<String> type1;
+    @Length(max = 128,message = "{ExchangeBookApplyVO.press.max.length}")
+    private String press;
 
-    private List<String> type2;
+    @Length(max = 64,message = "{ExchangeBookApplyVO.publicationDate.max.length}")
+    @DateV1(message = "{ExchangeBookApplyVO.applicationDate.illegal.format}")
+    private String publicationDate;
 
-    private String press1;
+    @NotNull(message="{ExchangeBookApplyVO.canExchange.not.null}")
+    private Boolean canExchange;
 
-    private String press2;
+    @Length(max = 512,message = "{ExchangeBookApplyVO.extra.max.length}")
+    private String extra;
 
-    @DateV1(message = "{ExchangeBookApplyVO.publicationDate.illegal.format}")
-    private String publicationDate1;
-
-    @DateV1(message = "{ExchangeBookApplyVO.publicationDate.illegal.format}")
-    private String publicationDate2;
-
-    private String extra1;
-
-    private String extra2;
-
-    @NotBlank(message = "{ExchangeBookApplyVO.owner.not.blank}")
-    private String owner2;
-
-    public String getBookName1() {
-        return bookName1;
+    public Integer getMyOwnBookId() {
+        return myOwnBookId;
     }
 
-    public void setBookName1(String bookName1) {
-        this.bookName1 = bookName1;
+    public void setMyOwnBookId(Integer myOwnBookId) {
+        this.myOwnBookId = myOwnBookId;
     }
 
-    public String getBookName2() {
-        return bookName2;
+    public Integer getWishBookId() {
+        return wishBookId;
     }
 
-    public void setBookName2(String bookName2) {
-        this.bookName2 = bookName2;
+    public void setWishBookId(Integer wishBookId) {
+        this.wishBookId = wishBookId;
     }
 
-    public String getAuthor1() {
-        return author1;
+    public String getBookName() {
+        return bookName;
     }
 
-    public void setAuthor1(String author1) {
-        this.author1 = author1;
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
-    public String getAuthor2() {
-        return author2;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuthor2(String author2) {
-        this.author2 = author2;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getIsbn1() {
-        return isbn1;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setIsbn1(String isbn1) {
-        this.isbn1 = isbn1;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
-    public String getIsbn2() {
-        return isbn2;
+    public List<String> getTypes() {
+        return types;
     }
 
-    public void setIsbn2(String isbn2) {
-        this.isbn2 = isbn2;
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
-    public List<String> getType1() {
-        return type1;
+    public String getPress() {
+        return press;
     }
 
-    public void setType1(List<String> type1) {
-        this.type1 = type1;
+    public void setPress(String press) {
+        this.press = press;
     }
 
-    public List<String> getType2() {
-        return type2;
+    public String getPublicationDate() {
+        return publicationDate;
     }
 
-    public void setType2(List<String> type2) {
-        this.type2 = type2;
+    public void setPublicationDate(String publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
-    public String getPress1() {
-        return press1;
+    public Boolean getCanExchange() {
+        return canExchange;
     }
 
-    public void setPress1(String press1) {
-        this.press1 = press1;
+    public void setCanExchange(Boolean canExchange) {
+        this.canExchange = canExchange;
     }
 
-    public String getPress2() {
-        return press2;
+    public String getExtra() {
+        return extra;
     }
 
-    public void setPress2(String press2) {
-        this.press2 = press2;
-    }
-
-    public String getPublicationDate1() {
-        return publicationDate1;
-    }
-
-    public void setPublicationDate1(String publicationDate1) {
-        this.publicationDate1 = publicationDate1;
-    }
-
-    public String getPublicationDate2() {
-        return publicationDate2;
-    }
-
-    public void setPublicationDate2(String publicationDate2) {
-        this.publicationDate2 = publicationDate2;
-    }
-
-    public String getExtra1() {
-        return extra1;
-    }
-
-    public void setExtra1(String extra1) {
-        this.extra1 = extra1;
-    }
-
-    public String getExtra2() {
-        return extra2;
-    }
-
-    public void setExtra2(String extra2) {
-        this.extra2 = extra2;
-    }
-
-    public String getOwner2() {
-        return owner2;
-    }
-
-    public void setOwner2(String owner2) {
-        this.owner2 = owner2;
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 }
